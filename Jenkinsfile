@@ -2,41 +2,39 @@ pipeline {
 
 agent {
 
-node {
+	node {
 
-label 'maven'
+	label 'maven'
 
-}
+	}
 
 }
 
 stages {
 
-stage('Tests') {
+	stage('Tests') {
 
-steps {
+	steps {
 
-sh './mvnw clean test'
+	sh './mvnw clean test'
 
-}
+	}
 
 }
 
 stage('Package') {
 
-steps {
+	steps {
 
-sh '''
+	sh '''
 
-./mvnw package -DskipTests \
+	./mvnw package -DskipTests -Dquarkus.package.type=uber-jar
 
--Dquarkus.package.type=uber-jar
+	'''
 
-'''
+	archiveArtifacts 'target/*.jar'
 
-archiveArtifacts 'target/*.jar'
-
-}
+	}
 
 }
 
